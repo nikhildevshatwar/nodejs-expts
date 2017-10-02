@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<div>
+	<img id="progressive-img" onload="load_better(6)" width="2104" height="1184" src="http://localhost:8080/img/food.jpg6"></img>
+</div>
+
+<script>
+function load_better(num) {
+	var img = document.getElementById("progressive-img");
+	console.log(img.src);
+	img.onload = function() {};
+	img.src = "http://localhost:8080/img/food.jpg" + num
+	if (num != 0) {
+		setTimeout(function() {load_better(num - 1)}, 300);
+	}
+}
+</script>
+<html>
