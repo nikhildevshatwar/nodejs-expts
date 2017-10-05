@@ -1,21 +1,50 @@
 # Nodejs experiments
 All trial example codes that I developed while learning nodejs and web technologies.
 
-**WARNING** This is amatuer level coding. This might be completely off the standards, inefficient and totally unsecure code. Do not use it for million doller systems.
+**WARNING** This is amatuer level coding. This might be completely off the standards, inefficient and totally unsecure code. Do not use it for million dollar systems.
 
 ## ImageMagic server
 Simple http server to experiment with ImageMagick Node.js module
 This is supposed to use server side computing to process images.
 
+1. Application server
+
+Application server will spin up an express application with which one can
+play around with multiple features of ImageMagick.
+
+2. Data server
+
+Spinning up this server will initiate a naive data server which provides APIs
+for data upload, serve and download.
+
 ### Install the required modules and packages
+Make sure you have nodejs and npm installed before you try to install packages.
 ``` bash
-sudo apt-get install nodejs npm
-npm install imagemagick
+npm install
 ```
 
-### Run the nodejs server
+### Copy Configuration
+There is a file `config/sample.json` which has all necessary configuration
+that are necessary for proper run of this server.
+
+```bash
+cp config/sample.json config/default.json
+```
+
+and make necessary changes to `default.json`.
+
+### Finally! Run
+
+First spin up the application server which would listen to port 3000
+
 ``` bash
-nodejs imserver.js
+node app.js
+```
+
+Now spin up dataserver which would listen to port 3001
+
+```bash
+node dataserver.js
 ```
 
 ### Test the progressive image loading
@@ -32,4 +61,3 @@ nodejs imserver.js
 **warning: here be dragons**
 This page was created at https://markdown-it.github.io/
 I Liked the dragons warning, so kept it :)
- 

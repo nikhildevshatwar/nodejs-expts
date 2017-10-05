@@ -12,7 +12,7 @@ http.createServer(function (req, res) {
 		console.log(q);
 		console.log("Converting imagemagick " + q.src);
 
-		im.convert([q.src, '-resize', q.size, 'output.jpg'], 
+		im.convert([q.src, '-resize', q.size, 'output.jpg'],
 		function(err, stdout){
 			if (err) {
 				res.write('<br/><h1>Failed to convert</h1>');

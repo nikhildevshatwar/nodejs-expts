@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-expts",
+  "version": "1.0.0",
+  "description": "All trial example codes that I developed while learning nodejs and web technologies.",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "config": "^1.26.2",
+    "diskdb": "^0.1.17",
+    "express": "^4.16.1",
+    "express-fileupload": "^0.2.0",
+    "express-handlebars": "^3.0.0",
+    "imagemagick": "^0.1.3",
+    "mime": "^2.0.3",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikhildevshatwar/nodejs-expts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nikhildevshatwar/nodejs-expts/issues"
+  },
+  "homepage": "https://github.com/nikhildevshatwar/nodejs-expts#readme"
+}

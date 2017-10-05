@@ -1,0 +1,14 @@
+<form ref='uploadForm' action='http://localhost:3001/upload' method='post' encType="multipart/form-data">
+    <label>Upload an image file</label>
+    <input type="file" name="sampleFile" />
+    <input type="hidden" name="next" value="http://localhost:3000/" />
+    <input type='submit' value='Upload!' />
+</form>
+
+<div>
+{{#each images}}
+    <a href="/images/{{this._id}}">
+        <img class="medium image" src="{{this.url}}"></img>
+    </a>
+{{/each}}
+</div>

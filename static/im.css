@@ -1,0 +1,22 @@
+html, body {
+    background: #FFF;
+    color: #000;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+a, a:link, a:visited {
+    color: #000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.medium.image {
+    height: 150px;
+    width: auto;
+}

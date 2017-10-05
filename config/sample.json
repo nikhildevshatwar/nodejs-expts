@@ -1,0 +1,15 @@
+{
+    "dataserver": {
+        "url": "http://localhost:3001",
+        "upload": {
+            "path": "/Users/arpitbh/data/raw"
+        },
+        "processed": {
+            "path": "/Users/arpitbh/data/processed"
+        },
+        "db": "/Users/arpitbh/data/db"
+    },
+    "app": {
+        "url": "http://localhost:3000"
+    }
+}
