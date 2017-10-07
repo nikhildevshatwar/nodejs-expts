@@ -3,6 +3,7 @@ const config = require('config');
 const router = require('express').Router();
 const mime = require('mime');
 const uuid = require('uuid/v1');
+const jimp = require('jimp');
 const diskdb = require('../db/diskdb');
 
 module.exports = router;
@@ -24,6 +25,31 @@ router.get('/:imageId', function(req, res) {
     });
 });
 
+function resizeImage(img, origName, savePath, imagesDB) {
+    w = img.bitmap.width;
+    h = img.bitmap.height;
+    console.log("JIMP: Size = " + w + "x" + h);
+
+    if (w > 32 && h > 32) {
+
+        fileName = uuid() + "." + img.getExtension();
+        filePath = savePath + "/" + fileName;
+        half = img.scale(0.5)
+
+        console.log("JIMP: Resized to half => " + filePath);
+        half.write(filePath, function() {
+            const data = {
+                name: fileName,
+                filePath: filePath,
+                next: origName,
+            }
+            imagesDB.save(data);
+            resizeImage(half, fileName, savePath, imagesDB);
+        });
+    }
+}
+
+
 router.post('/upload', function(req, res) {
     if (!req.files) {
         return res.status(400).send('No files were uploaded.');
@@ -43,10 +69,17 @@ router.post('/upload', function(req, res) {
             }
             imagesDB.save(data);
             if (redirectPath) {
-                return res.redirect(redirectPath);
+                res.redirect(redirectPath);
             } else {
-                return res.send(data);
+                res.send(data);
             }
+
+            resizePath = config.get('dataserver.processed.path')
+            console.log("Post processing image " + filePath);
+            jimp.read(filePath, function(err, img) {
+                resizeImage(img, fileName, resizePath, imagesDB)
+                //Shall we keep DB connection open while resizing??
+            });
         });
     });
 });

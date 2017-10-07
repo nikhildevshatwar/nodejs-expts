@@ -7,7 +7,7 @@ module.exports = router;
 
 router.get('/:imageId', function(req, res) {
     diskdb.getInstance(function(imagesDB) {
-        const image = imagesDB.findOne({_id: req.params.imageId})
+        const image = imagesDB.findOne({_id: req.params.imageId })
         return res.render('image-one', {
             _id: image._id,
             name: image.name,

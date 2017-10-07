@@ -1,7 +1,7 @@
 const config = require('config');
 const diskdb = require('diskdb');
 
-let db;
+var db;
 
 function getInstance(callback) {
     if (db) { return callback(db); }

@@ -32,6 +32,7 @@ cp config/sample.json config/default.json
 ```
 
 and make necessary changes to `default.json`.
+**Make sure that all the directories for the database are created**
 
 ### Finally! Run
 
