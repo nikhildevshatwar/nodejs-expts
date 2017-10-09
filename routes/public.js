@@ -8,11 +8,10 @@ module.exports = router;
 router.get('/', function(req, res) {
     diskdb.getInstance(function(imagesDB) {
         return res.render('index', {
-            images: imagesDB.find({}).map(function(e) {
+            images: imagesDB.find({quality: 5}).map(function(e) {
                 return {
-                    _id: e._id,
-                    name: e.name,
-                    url: config.get('dataserver.url') + '/' + e._id,
+                    fname: e.name,
+                    url: config.get('dataserver.url') + '/' + e.name,
                 };
             })
         });

@@ -7,8 +7,29 @@
 
 <div>
 {{#each images}}
-    <a href="/images/{{this._id}}">
-        <img class="medium image" src="{{this.url}}"></img>
+    <a href="/images/{{this.fname}}">
+        <img class="medium image" id="{{this.fname}}" src="{{this.url}}"></img>
     </a>
 {{/each}}
 </div>
+
+<script>
+{{#each images}}
+load_better("{{this.fname}}");
+{{/each}}
+
+function load_better(id) {
+	var img = document.getElementById(id);
+	url = img.src;
+	console.log(url);
+	num = parseInt(url.split("_")[1].split(".")[0]);
+	console.log(num);
+	if (num != 0) {
+		url = url.replace("_" + num, "_" + (num - 1));
+		console.log("Replaced = " + url);
+		img.src = url;
+		setTimeout(function() {load_better(id)}, 500);
+	}
+}
+
+</script>

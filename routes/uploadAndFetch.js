@@ -11,7 +11,7 @@ module.exports = router;
 router.get('/:imageId', function(req, res) {
     var imageId = req.params.imageId;
     diskdb.getInstance(function(imagesDB) {
-        const data = imagesDB.findOne({_id: imageId});
+        const data = imagesDB.findOne({name: imageId});
         var stream = fs.createReadStream(data.filePath);
 
         stream.on('error', function(error) {
@@ -25,15 +25,15 @@ router.get('/:imageId', function(req, res) {
     });
 });
 
-function resizeImage(img, origName, savePath, imagesDB) {
+function resizeImage(img, quality, priv) {
     w = img.bitmap.width;
     h = img.bitmap.height;
     console.log("JIMP: Size = " + w + "x" + h);
 
-    if (w > 32 && h > 32) {
+    if (w > 32 && h > 32 && quality < 6) {
 
-        fileName = uuid() + "." + img.getExtension();
-        filePath = savePath + "/" + fileName;
+        fileName = priv.prefix + "_" + quality + "." + img.getExtension();
+        filePath = priv.path + "/" + fileName;
         half = img.scale(0.5)
 
         console.log("JIMP: Resized to half => " + filePath);
@@ -41,10 +41,10 @@ function resizeImage(img, origName, savePath, imagesDB) {
             const data = {
                 name: fileName,
                 filePath: filePath,
-                next: origName,
+                quality: quality,
             }
-            imagesDB.save(data);
-            resizeImage(half, fileName, savePath, imagesDB);
+            priv.db.save(data);
+            resizeImage(half, quality + 1, priv);
         });
     }
 }
@@ -55,7 +55,8 @@ router.post('/upload', function(req, res) {
         return res.status(400).send('No files were uploaded.');
     }
     const sampleFile = req.files.sampleFile;
-    const fileName = uuid() + "." + mime.getExtension(sampleFile.mimetype);
+    const prefix = uuid();
+    const fileName = prefix + "_0." + mime.getExtension(sampleFile.mimetype);
     const filePath = config.get('dataserver.upload.path') + '/' + fileName;
     const redirectPath = req.body.next;
     diskdb.getInstance(function(imagesDB) {
@@ -66,6 +67,7 @@ router.post('/upload', function(req, res) {
             const data = {
                 name: fileName,
                 filePath: filePath,
+                quality: 0,
             }
             imagesDB.save(data);
             if (redirectPath) {
@@ -75,9 +77,15 @@ router.post('/upload', function(req, res) {
             }
 
             resizePath = config.get('dataserver.processed.path')
+            var priv = {
+                path: resizePath,
+                prefix: prefix,
+                db: imagesDB,
+            };
+
             console.log("Post processing image " + filePath);
             jimp.read(filePath, function(err, img) {
-                resizeImage(img, fileName, resizePath, imagesDB)
+                resizeImage(img, 1, priv)
                 //Shall we keep DB connection open while resizing??
             });
         });
